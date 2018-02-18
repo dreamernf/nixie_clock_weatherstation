@@ -40,10 +40,15 @@
 //--------------------------------------------------------------
 UART_t UART[] = {
 // Name, Clock               , AF-UART      ,UART  , Baud , Interrupt
-  {COM4,RCC_APB1Periph_UART4,GPIO_AF_UART4,UART4,9600,UART4_IRQn, // UART4 mit 115200 Baud
+ // {COM4,RCC_APB1Periph_UART4,GPIO_AF_UART4,UART4,9600,UART4_IRQn, // UART4 mit 115200 Baud
 // PORT , PIN      , Clock              , Source
-  {GPIOC,GPIO_Pin_10,RCC_AHB1Periph_GPIOC,GPIO_PinSource10},  // TX an PÑ10
-  {GPIOC,GPIO_Pin_11,RCC_AHB1Periph_GPIOC,GPIO_PinSource11}}, // RX an PÑ11
+ // {GPIOC,GPIO_Pin_10,RCC_AHB1Periph_GPIOC,GPIO_PinSource10},  // TX an PÑ10
+ // {GPIOC,GPIO_Pin_11,RCC_AHB1Periph_GPIOC,GPIO_PinSource11}}, // RX an PÑ11
+
+  {COM1,RCC_APB2Periph_USART1 ,GPIO_AF_USART1,USART1,9600,USART1_IRQn, // UART1 mit 115200 Baud
+// PORT , PIN      , Clock              , Source
+  {GPIOB,GPIO_Pin_6,RCC_AHB1Periph_GPIOB,GPIO_PinSource6},  // TX an PÑ6
+  {GPIOB,GPIO_Pin_7,RCC_AHB1Periph_GPIOB,GPIO_PinSource7}}, // RX an PÑ7
 };
 
 

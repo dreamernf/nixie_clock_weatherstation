@@ -24,7 +24,7 @@
 //--------------------------------------------------------------
 typedef enum
 {
-  COM4 = 0  // COM4 (TX=PÑ10, RX=PÑ11)
+  COM1 = 0  // COM1 (TX=PB6, RX=PB7)
 }UART_NAME_t;
 
 #define  UART_ANZ   1 // Anzahl von UART_NAME_t

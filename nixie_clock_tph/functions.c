@@ -219,6 +219,21 @@ void symbol_m1 (uint8_t status)
 	DATA_SYMBOLS&=~(1<<SYMBOL_GRADUS);
 }
 
+void symbol_m2 (uint8_t status)
+{
+	if (status == ON)
+	{
+		DATA_SYMBOLS = DATA_SYMBOLS|=1<<SYMBOL_MM2;
+	}
+	if (status == OFF)
+	{
+		DATA_SYMBOLS&=~(1<<SYMBOL_MM1);
+		DATA_SYMBOLS&=~(1<<SYMBOL_MM2);
+	}
+	DATA_SYMBOLS&=~(1<<SYMBOL_PERCENT);
+	DATA_SYMBOLS&=~(1<<SYMBOL_GRADUS);
+}
+
 void symbols2_off (void)
 {
 	DATA_SYMBOLS&=~(1<<SYMBOL_PERCENT);
@@ -245,12 +260,28 @@ if (type_of_ind == PRESSURE)
 		 status_in14 = IN14_DEC + IN14_EDIN + IN14_PART;
 	}
 
+
+
+if (type_of_ind == DEMO)
+	{
+		 status_in14 = IN14_DEC + IN14_EDIN + IN14_PART;
+	}
+
+if (type_of_ind == DAYMONTH)
+	{
+		symbols1_off();
+		symbol_mm(OFF);
+		symbol_smalldot(OFF);
+		 status_in14 = 0;
+	}
+
 if (type_of_ind == HUMIDITY)
 	{
 		symbols1_off();
 		symbol_percent(ON);
 		symbol_smalldot(OFF);
-		 status_in14 = IN14_EDIN + IN14_PART;
+		// status_in14 = IN14_DEC + IN14_EDIN + IN14_PART;
+		 status_in14 =  IN14_EDIN + IN14_PART;
 	}
 
 if (type_of_ind == TEMP_P)
@@ -267,6 +298,14 @@ if (type_of_ind == TEMP_N)
 		symbol_gradus(ON);
 		symbol_smalldot(ON);
 		 status_in14 = IN14_DEC + IN14_EDIN + IN14_PART;
+	}
+
+if (type_of_ind == ERROR_RF)
+	{
+	    symbols1_off();
+		symbol_gradus(ON);
+		symbol_smalldot(OFF);
+		 status_in14 = 0;
 	}
 
     tmp = data%100;
@@ -299,7 +338,6 @@ if (type_of_ind == TIME_SECONDS)
 {
 	DATA_TPH2 = 0;
 	symbols2_off();
-	symbol_dot2(ON);
 	symbol_smalldot(OFF);
 	status_in14 = IN14_DEC + IN14_EDIN;
 
@@ -337,6 +375,7 @@ if (type_of_ind == TIME_SET)
 if (type_of_ind == TIME_TDC)
 {
 	DATA_TPH2 = 0;
+	IN18_Only_dot();
 	symbols2_off();
 	symbol_gradus(OFF);
 	symbol_dot2(ON);
@@ -359,6 +398,7 @@ if (type_of_ind == TIME_TDP)
 	DATA_TPH2 = 0;
 	symbols2_off();
 	symbol_m1(ON);
+	symbol_m2(ON);
 	symbol_dot2(OFF);
 	symbol_smalldot(OFF);
 	status_in14 = IN14_DEC + IN14_EDIN + IN14_PART;
@@ -374,6 +414,73 @@ if (type_of_ind == TIME_TDP)
     DATA_TPH2 =DATA_TPH2+ status_in14;
 
 }
+
+if (type_of_ind == TIME_TDT)
+{
+	DATA_TPH2 = 0;
+	symbols2_off();
+	symbol_m1(OFF);
+	symbol_dot2(OFF);
+	symbol_smalldot(OFF);
+	symbol_gradus(ON);
+	status_in14 = IN14_DEC + IN14_EDIN + IN14_PART;
+
+
+    tmp = data%100;
+    DATA_TPH1 = convert_code_id1_in14(tmp%10);
+    DATA_TPH1  =DATA_TPH1  <<4;
+    DATA_TPH1  =DATA_TPH1  + convert_code_id1_in14(data/100);
+    DATA_TPH2 =  convert_code_id1_in14(tmp/10);
+    DATA_TPH2 = DATA_TPH2 << 4;
+
+    DATA_TPH2 =DATA_TPH2+ status_in14;
+
+}
+
+if (type_of_ind == TIME_TDD)
+{
+	DATA_TPH2 = 0;
+	symbols2_off();
+	symbol_m2(ON);
+	symbol_dot2(ON);
+	symbol_smalldot(OFF);
+	status_in14 = IN14_DEC + IN14_EDIN + IN14_PART;
+
+
+    tmp = data%100;
+    DATA_TPH1 = convert_code_id1_in14(tmp%10);
+    DATA_TPH1  =DATA_TPH1  <<4;
+    DATA_TPH1  =DATA_TPH1  + convert_code_id1_in14(data/100);
+    DATA_TPH2 =  convert_code_id1_in14(tmp/10);
+    DATA_TPH2 = DATA_TPH2 << 4;
+
+    DATA_TPH2 =DATA_TPH2+ status_in14;
+}
+
+
+if (type_of_ind == TIME_TDH)
+{
+	DATA_TPH2 = 0;
+	symbols2_off();
+	symbol_m1(OFF);
+	symbol_percent(ON);
+	symbol_dot2(OFF);
+	symbol_smalldot(OFF);
+	status_in14 = IN14_DEC + IN14_EDIN + IN14_PART;
+
+
+    tmp = data%100;
+    DATA_TPH1 = convert_code_id1_in14(tmp%10);
+    DATA_TPH1  =DATA_TPH1  <<4;
+    DATA_TPH1  =DATA_TPH1  + convert_code_id1_in14(data/100);
+    DATA_TPH2 =  convert_code_id1_in14(tmp/10);
+    DATA_TPH2 = DATA_TPH2 << 4;
+
+    DATA_TPH2 =DATA_TPH2+ status_in14;
+
+}
+
+
 
 }
 
@@ -412,6 +519,26 @@ void  IN18_On_and_dot(void)
 	DATA_CLOCK_ANODES  =H1 + H2 + DOT + M1 +M2;
 }
 
+void  IN18_Only_dot(void)
+{
+	DATA_CLOCK_ANODES  = DOT;
+}
+
+void  IN18_On_and_nodot(void)
+{
+	DATA_CLOCK_ANODES  =H1 + H2 + M1 +M2;
+}
+
+void  IN18_On_hour09(void)
+{
+	DATA_CLOCK_ANODES  = H2 + DOT + M1 +M2;
+}
+
+void  IN18_On_hour09_nodot(void)
+{
+	DATA_CLOCK_ANODES  = H2 + M1 +M2;
+}
+
 void  IN18_Off(void)
 {
 	DATA_CLOCK_ANODES  = 0x00;
@@ -422,9 +549,34 @@ void  IN18_On_Only_Minutes(void)
 	DATA_CLOCK_ANODES  =H1 + H2 +DOT  ;
 }
 
+void  IN18_On_Only_EdMinutes(void)
+{
+	DATA_CLOCK_ANODES  =M1  ;
+}
+
 void  IN18_On_Only_Hours(void)
 {
 	DATA_CLOCK_ANODES  =M1 + M2 +DOT  ;
+}
+
+
+int what_day(uint8_t day , uint8_t month, uint8_t year)
+{
+    int a = (14 - month) / 12;
+    int y = 2000+year - a;
+    int m = month + 12 * a - 2;
+    return (7000 + (day + y + y / 4 - y / 100 + y / 400 + (31 * m) / 12)) % 7;
+}
+
+void Delay(volatile uint32_t nCount) {
+  while(nCount--) {
+  }
+}
+
+void Beep() {
+	  UB_Led_On(BEEPER);
+	  vTaskDelay(100/portTICK_RATE_MS);
+	  UB_Led_Off(BEEPER);
 }
 
 

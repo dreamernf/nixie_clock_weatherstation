@@ -13,8 +13,11 @@
 #include "stm32f4xx_gpio.h"
 #include "stm32f4xx_rcc.h"
 #include "stm32_ub_spi1.h"
+//#include "stm32_ub_pwm_tim3.h"
 #include "stm32_ub_spi_send_mbyte.h"
 #include "defines.h"
+#include "stm32_ub_freertos.h"
+#include "stm32_ub_led.h"
 
 
 int16_t   enc_GetRelativeMove(void);
@@ -38,10 +41,18 @@ void process_data_for_display_clock(uint8_t  hh, uint8_t mm);
 void out_data_to_indicators (void);
 
 void  IN18_On_and_dot(void);
+void  IN18_Only_dot(void);
 void  IN18_Off(void);
 
 void  IN18_On_Only_Minutes(void);
 void  IN18_On_Only_Hours(void);
+void  IN18_On_hour09(void);
+void  IN18_On_and_nodot(void);
+void  IN18_On_hour09_nodot(void);
+//void  RGB_Led_Work(uint8_t  brign);
+int what_day(uint8_t day , uint8_t month, uint8_t year);
+void Delay(volatile uint32_t nCount);
+void Beep();
 
 
 #endif // __STM32F4_UB_BUTTON_H

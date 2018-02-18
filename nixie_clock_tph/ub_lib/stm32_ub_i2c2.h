@@ -70,6 +70,7 @@ int16_t UB_I2C2_ReadByte(uint8_t slave_adr, uint8_t adr);
 int16_t UB_I2C2_WriteByte(uint8_t slave_adr, uint8_t adr, uint8_t wert);
 int16_t UB_I2C2_ReadMultiByte(uint8_t slave_adr, uint8_t adr, uint8_t cnt);
 int16_t UB_I2C2_WriteMultiByte(uint8_t slave_adr, uint8_t adr, uint8_t cnt);
+int16_t UB_I2C2_WriteCMD(uint8_t slave_adr, uint8_t cmd);
 void UB_I2C2_Delay(volatile uint32_t nCount);
 
 

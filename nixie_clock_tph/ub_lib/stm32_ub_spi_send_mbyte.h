@@ -15,7 +15,8 @@
 //--------------------------------------------------------------
 // ChipSelect-Pin 
 //--------------------------------------------------------------
-#define NIXIE_REG_CS_PIN         GPIO_Pin_3
+#define NIXIE_REG_CS_PIN         GPIO_Pin_4
+//#define NIXIE_REG_CS_PIN         GPIO_Pin_3
 #define NIXIE_REG_CS_GPIO_PORT   GPIOA
 #define NIXIE_REG_CS_GPIO_CLK    RCC_AHB1Periph_GPIOA
   

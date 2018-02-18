@@ -36,9 +36,11 @@
 typedef enum 
 {
   BTN_MENU = 0,
+  BTN_PLUS = 1,
+  BTN_MINUS = 2,
 }BUTTON_NAME_t;
 
-#define  BUTTON_ANZ   1 // Anzahl von Button_NAME_t
+#define  BUTTON_ANZ   3 // Anzahl von Button_NAME_t
 
 
 //--------------------------------------------------------------

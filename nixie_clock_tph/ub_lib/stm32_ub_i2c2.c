@@ -431,6 +431,60 @@ int16_t UB_I2C2_WriteMultiByte(uint8_t slave_adr, uint8_t adr, uint8_t cnt)
 
 
 //--------------------------------------------------------------
+// Schreiben eines Kommandos per I2C an einen Slave
+// slave_adr => I2C-Basis-Adresse vom Slave
+// cmd       => Kommando das gesendet wird
+//
+// Return_wert :
+//    0   , Ok
+//  < 0   , Error
+//--------------------------------------------------------------
+int16_t UB_I2C2_WriteCMD(uint8_t slave_adr, uint8_t cmd)
+{
+  int16_t ret_wert=0;
+  uint32_t timeout=I2C2_TIMEOUT;
+
+  // Start-Sequenz
+  I2C_GenerateSTART(I2C2, ENABLE);
+
+  timeout=I2C2_TIMEOUT;
+  while (!I2C_GetFlagStatus(I2C2, I2C_FLAG_SB)) {
+    if(timeout!=0) timeout--; else return(P_I2C2_timeout(-1));
+  }
+
+  // Slave-Adresse senden (write)
+  I2C_Send7bitAddress(I2C2, slave_adr, I2C_Direction_Transmitter);
+
+  timeout=I2C2_TIMEOUT;
+  while (!I2C_GetFlagStatus(I2C2, I2C_FLAG_ADDR)) {
+    if(timeout!=0) timeout--; else return(P_I2C2_timeout(-2));
+  }
+
+  // ADDR-Flag löschen
+  I2C2->SR2;
+
+  timeout=I2C2_TIMEOUT;
+  while (!I2C_GetFlagStatus(I2C2, I2C_FLAG_TXE)) {
+    if(timeout!=0) timeout--; else return(P_I2C2_timeout(-3));
+  }
+
+  // CMD senden
+  I2C_SendData(I2C2, cmd);
+
+  timeout=I2C2_TIMEOUT;
+  while ((!I2C_GetFlagStatus(I2C2, I2C_FLAG_TXE)) || (!I2C_GetFlagStatus(I2C2, I2C_FLAG_BTF))) {
+    if(timeout!=0) timeout--; else return(P_I2C2_timeout(-4));
+  }
+
+  // Stop-Sequenz
+  I2C_GenerateSTOP(I2C2, ENABLE);
+
+  ret_wert=0; // alles ok
+
+  return(ret_wert);
+}
+
+//--------------------------------------------------------------
 // kleine Pause (ohne Timer)
 //--------------------------------------------------------------
 void UB_I2C2_Delay(volatile uint32_t nCount)
@@ -486,4 +540,5 @@ int16_t P_I2C2_timeout(int16_t wert)
     
   return(ret_wert);
 }
+
 
