@@ -104,7 +104,7 @@ void IsWorkedTask( void *pvParameters );
 void PWMTask( void *pvParameters );
 void GetTP( void *pvParameters );
 void GetTime_and_Date( void *pvParameters );
-//void GetTempOut( void *pvParameters );
+void GetTempOut( void *pvParameters );
 void Out_Data_to_Nixie( void *pvParameters );
 void ScanInput( void *pvParameters );
 void Dots_Clock( void *pvParameters );
@@ -120,20 +120,20 @@ void hw_init(void)
   UB_Button_OnClick(BTN_MENU);
   UB_I2C2_Init();
   NIXIE_REG_Init();
- // UB_PWM_TIM3_Init();
+  UB_PWM_TIM3_Init();
 
   /* Initialize NRF24L01+ on channel 15 and 32bytes of payload */
   /* By default 2Mbps data rate and 0dBm output power */
   /* NRF24L01 goes to RX mode by default */
-  //TM_NRF24L01_Init(16, 4);
+  TM_NRF24L01_Init(16, 4);
 
   /* Set RF settings, Data rate to 2Mbps, Output power to -18dBm */
-  //TM_NRF24L01_SetRF(TM_NRF24L01_DataRate_2M, TM_NRF24L01_OutputPower_M18dBm);
+  TM_NRF24L01_SetRF(TM_NRF24L01_DataRate_2M, TM_NRF24L01_OutputPower_M18dBm);
 
   /* Set my address, 5 bytes */
- // TM_NRF24L01_SetMyAddress(MyAddress);
+  TM_NRF24L01_SetMyAddress(MyAddress);
   /* Set TX address, 5 bytes */
-  //TM_NRF24L01_SetTxAddress(TxAddress);
+  TM_NRF24L01_SetTxAddress(TxAddress);
 
  I2C2_DATA[0] = 0x01;
  UB_I2C2_WriteMultiByte(HTU21D, 0xE6, 1);
@@ -176,7 +176,7 @@ int main(void)
   xTaskCreate( IsWorkedTask, ( signed char * ) "IsWorkedTask", configMINIMAL_STACK_SIZE, NULL, 1, NULL );
   xTaskCreate( PWMTask, ( signed char * ) "PWMTask", configMINIMAL_STACK_SIZE, NULL, 1, NULL );
   xTaskCreate( GetTP, ( signed char * ) "GetTP", configMINIMAL_STACK_SIZE, NULL, 1, NULL);
-  //xTaskCreate( GetTempOut, ( signed char * ) "GetTempOut", configMINIMAL_STACK_SIZE, NULL, 1, NULL);
+  xTaskCreate( GetTempOut, ( signed char * ) "GetTempOut", configMINIMAL_STACK_SIZE, NULL, 1, NULL);
   xTaskCreate( Out_Data_to_Nixie, ( signed char * ) "Out_Data_to_Nixie", configMINIMAL_STACK_SIZE, NULL, 1, NULL);
   xTaskCreate( ScanInput, ( signed char * ) "ScanInput", configMINIMAL_STACK_SIZE, NULL, 1, NULL);
   xTaskCreate(GetTime_and_Date, ( signed char * ) "GetTime_and_Date", configMINIMAL_STACK_SIZE, NULL, 1, NULL);
@@ -293,7 +293,7 @@ void GetTime_and_Date( void *pvParameters )
     */
 
 	 taskEXIT_CRITICAL();
-	 vTaskDelay(150/portTICK_RATE_MS);
+	 vTaskDelay(500/portTICK_RATE_MS);
     }
   }
 
@@ -786,7 +786,6 @@ void Out_Data_to_Nixie( void *pvParameters )
 
 	while(1)
     {
-
 		if ((flag_menu == NO_MENU) && (flag_scan_inlamps == 1))
 		     {
 			time_of_display_scan++;
@@ -901,7 +900,7 @@ void Out_Data_to_Nixie( void *pvParameters )
 										time_of_display = 0;
 									}
 
-		        vTaskDelay(50/portTICK_RATE_MS);
+						vTaskDelay(500/portTICK_RATE_MS);
     }
 
 if (flag_menu == MENU_SET_MINUTE)

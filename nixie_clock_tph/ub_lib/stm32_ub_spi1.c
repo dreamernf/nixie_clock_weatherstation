@@ -62,6 +62,7 @@ ErrorStatus UB_SPI1_Init(SPI1_Mode_t mode)
   RCC_AHB1PeriphClockCmd(SPI1DEV.MOSI.CLK, ENABLE);
   RCC_AHB1PeriphClockCmd(SPI1DEV.MISO.CLK, ENABLE);
 
+
   // SPI Alternative-Funktions mit den IO-Pins verbinden
   GPIO_PinAFConfig(SPI1DEV.SCK.PORT, SPI1DEV.SCK.SOURCE, GPIO_AF_SPI1);
   GPIO_PinAFConfig(SPI1DEV.MOSI.PORT, SPI1DEV.MOSI.SOURCE, GPIO_AF_SPI1);
