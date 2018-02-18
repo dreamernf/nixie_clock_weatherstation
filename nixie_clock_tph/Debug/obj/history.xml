@@ -1,0 +1,116 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<history>
+   <processor signature="arm-none-eabi-gcc noversion nomachine -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=softfp -mthumb -Wall -ffunction-sections -g -O0 -std=c99 -c -DSTM32F415RG -DSTM32F4XX -DUSE_STDPERIPH_DRIVER -D__ASSEMBLY__ -D__FPU_USED -ID:\WORK\STM\Projects\nixie_clock_tph\ub_lib\FreeRTOS\Source\portable\GCC\ARM_CM4F -ID:\WORK\STM\Projects\nixie_clock_tph\ub_lib\FreeRTOS\Source -ID:\WORK\STM\Projects -ID:\WORK\STM\Projects\nixie_clock_tph\ub_lib\FreeRTOS -ID:\WORK\STM\Projects\nixie_clock_tph\ub_lib\FreeRTOS\Source\include -ID:\WORK\STM\Projects\nixie_clock_tph\cmsis_lib\include -ID:\WORK\STM\Projects\nixie_clock_tph\cmsis_boot -ID:\WORK\STM\Projects\nixie_clock_tph\cmsis -ID:\WORK\STM\Projects\nixie_clock_tph\ub_lib\FreeRTOS\Source\portable -ID:\WORK\STM\Projects\nixie_clock_tph -ID:\WORK\STM -ID:\WORK\STM\Projects\nixie_clock_tph\semihosting -ID:\WORK\STM\Projects\nixie_clock_tph\ub_lib -ID:\WORK\STM\Projects\nixie_clock_tph\cmsis_lib -ID:\WORK\STM\Projects\nixie_clock_tph\ub_lib\FreeRTOS\Source\portable\GCC">
+      <target file="stm32_ub_spi1.o" lastModified="161a986d8f5">
+         <source file="..\..\..\ub_lib\stm32_ub_spi1.c" lastModified="14a3072fde0"/>
+      </target>
+      <target file="misc.o" lastModified="161a986e4a3">
+         <source file="..\..\..\cmsis_lib\source\misc.c" lastModified="14a4867f812"/>
+      </target>
+      <target file="stm32_ub_encoder_tim2.o" lastModified="161a986e56e">
+         <source file="..\..\..\ub_lib\stm32_ub_encoder_tim2.c" lastModified="14a6e26c9e9"/>
+      </target>
+      <target file="stm32_ub_uart.o" lastModified="161a986d9c0">
+         <source file="..\..\..\ub_lib\stm32_ub_uart.c" lastModified="1571db9725b"/>
+      </target>
+      <target file="sh_cmd.o" lastModified="161a986dc5f">
+         <source file="..\..\..\semihosting\sh_cmd.s" lastModified="14a488500bf"/>
+      </target>
+      <target file="queue.o" lastModified="161a986e076">
+         <source file="..\..\..\ub_lib\FreeRTOS\Source\queue.c" lastModified="14236909ba0"/>
+      </target>
+      <target file="functions.o" lastModified="161a986d6ef">
+         <source file="..\..\..\functions.c" lastModified="157232555fd"/>
+      </target>
+      <target file="stm32f4xx_tim.o" lastModified="161a986e983">
+         <source file="..\..\..\cmsis_lib\source\stm32f4xx_tim.c" lastModified="14a437a3dfb"/>
+      </target>
+      <target file="timers.o" lastModified="161a986d1eb">
+         <source file="..\..\..\ub_lib\FreeRTOS\Source\timers.c" lastModified="14236909ba0"/>
+      </target>
+      <target file="stm32_ub_i2c2.o" lastModified="161a986caf2">
+         <source file="..\..\..\ub_lib\stm32_ub_i2c2.c" lastModified="14af41b5580"/>
+      </target>
+      <target file="tasks.o" lastModified="161a986d83a">
+         <source file="..\..\..\ub_lib\FreeRTOS\Source\tasks.c" lastModified="1424b8cb570"/>
+      </target>
+      <target file="stm32f4xx_exti.o" lastModified="161a986e3d0">
+         <source file="..\..\..\cmsis_lib\source\stm32f4xx_exti.c" lastModified="14a6c5a052d"/>
+      </target>
+      <target file="stm32f4xx_gpio.o" lastModified="161a986dc20">
+         <source file="..\..\..\cmsis_lib\source\stm32f4xx_gpio.c" lastModified="14a43795dee"/>
+      </target>
+      <target file="tm_stm32f4_spi.o" lastModified="161a986db55">
+         <source file="..\..\..\ub_lib\tm_stm32f4_spi.c" lastModified="14af7ca66a5"/>
+      </target>
+      <target file="stm32_ub_freertos.o" lastModified="161a986e751">
+         <source file="..\..\..\ub_lib\stm32_ub_freertos.c" lastModified="143800bedb0"/>
+      </target>
+      <target file="tm_stm32f4_nrf24l01.o" lastModified="161a986ccf6">
+         <source file="..\..\..\ub_lib\tm_stm32f4_nrf24l01.c" lastModified="14af7c3b545"/>
+      </target>
+      <target file="tm_stm32f4_rotary_encoder.o" lastModified="161a986d381">
+         <source file="..\..\..\ub_lib\tm_stm32f4_rotary_encoder.c" lastModified="14a6c68ebd8"/>
+      </target>
+      <target file="stm32f4xx_usart.o" lastModified="161a986cbeb">
+         <source file="..\..\..\cmsis_lib\source\stm32f4xx_usart.c" lastModified="14a4860e74c"/>
+      </target>
+      <target file="stm32f4xx_rtc.o" lastModified="161a986e6a6">
+         <source file="..\..\..\cmsis_lib\source\stm32f4xx_rtc.c" lastModified="14a437992a1"/>
+      </target>
+      <target file="stm32f4xx_rcc.o" lastModified="161a986d101">
+         <source file="..\..\..\cmsis_lib\source\stm32f4xx_rcc.c" lastModified="14a43793306"/>
+      </target>
+      <target file="eeprom.o" lastModified="161a986ea34">
+         <source file="..\..\..\ub_lib\eeprom.c" lastModified="14a688536a1"/>
+      </target>
+      <target file="croutine.o" lastModified="161a986e141">
+         <source file="..\..\..\ub_lib\FreeRTOS\Source\croutine.c" lastModified="1423690da20"/>
+      </target>
+      <target file="list.o" lastModified="161a986dd1c">
+         <source file="..\..\..\ub_lib\FreeRTOS\Source\list.c" lastModified="14236909ba0"/>
+      </target>
+      <target file="stm32_ub_spi_send_mbyte.o" lastModified="161a986de83">
+         <source file="..\..\..\ub_lib\stm32_ub_spi_send_mbyte.c" lastModified="14a3066a991"/>
+      </target>
+      <target file="port.o" lastModified="161a986df4e">
+         <source file="..\..\..\ub_lib\FreeRTOS\Source\portable\GCC\ARM_CM4F\port.c" lastModified="14236909ba0"/>
+      </target>
+      <target file="stm32_ub_led.o" lastModified="161a986ce4d">
+         <source file="..\..\..\ub_lib\stm32_ub_led.c" lastModified="1571dd8e823"/>
+      </target>
+      <target file="startup_stm32f4xx.o" lastModified="161a986cd9b">
+         <source file="..\..\..\cmsis_boot\startup\startup_stm32f4xx.c" lastModified="14a43793327"/>
+      </target>
+      <target file="printf.o" lastModified="161a986d2c5">
+         <source file="..\..\..\stdio\printf.c" lastModified="14a488500fd"/>
+      </target>
+      <target file="stm32_ub_pwm_tim3.o" lastModified="161a986da8b">
+         <source file="..\..\..\ub_lib\stm32_ub_pwm_tim3.c" lastModified="14a44ef8258"/>
+      </target>
+      <target file="heap_2.o" lastModified="161a986e80d">
+         <source file="..\..\..\ub_lib\FreeRTOS\Source\portable\MemMang\heap_2.c" lastModified="14236909ba0"/>
+      </target>
+      <target file="stm32f4xx_i2c.o" lastModified="161a986e315">
+         <source file="..\..\..\cmsis_lib\source\stm32f4xx_i2c.c" lastModified="14a4379fdf8"/>
+      </target>
+      <target file="stm32f4xx_syscfg.o" lastModified="161a986c9b8">
+         <source file="..\..\..\cmsis_lib\source\stm32f4xx_syscfg.c" lastModified="14a6c5ae4c8"/>
+      </target>
+      <target file="stm32_ub_button.o" lastModified="161a986d43d">
+         <source file="..\..\..\ub_lib\stm32_ub_button.c" lastModified="1571e3ad2c6"/>
+      </target>
+      <target file="stm32f4xx_spi.o" lastModified="161a986e22b">
+         <source file="..\..\..\cmsis_lib\source\stm32f4xx_spi.c" lastModified="14a4379c6dc"/>
+      </target>
+      <target file="main.o" lastModified="161a986cff7">
+         <source file="..\..\..\main.c" lastModified="161a986c4f1"/>
+      </target>
+      <target file="semihosting.o" lastModified="161a986c8ec">
+         <source file="..\..\..\semihosting\semihosting.c" lastModified="14a488500a6"/>
+      </target>
+      <target file="system_stm32f4xx.o" lastModified="161a986ddc8">
+         <source file="..\..\..\cmsis_boot\system_stm32f4xx.c" lastModified="14a43793372"/>
+      </target>
+   </processor>
+</history>

@@ -1,0 +1,45 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<history>
+   <processor signature="arm-none-eabi-gcc -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=softfp -mthumb -Wall -g -nostartfiles -Map=nixie_clock_tph.map -O0 --gc-sections -LC:\CooCox\CoIDE\configuration\ProgramData\nixie_clock_tph -TC:\CooCox\CoIDE\configuration\ProgramData\nixie_clock_tph/link.ld -g -LC:\CooCox\arm-2011.03-coocox\arm-2011.03-coocox\arm-none-eabi\lib\armv6-m -lm">
+      <target file="nixie_clock_tph.elf" lastModified="161a986ed80">
+         <source file="C:\CooCox\arm-2011.03-coocox\arm-2011.03-coocox\arm-none-eabi\lib\armv6-m\libm.a" lastModified="133ff588840"/>
+         <source file="..\obj\semihosting.o" lastModified="161a986c8ec"/>
+         <source file="..\obj\stm32f4xx_syscfg.o" lastModified="161a986c9b8"/>
+         <source file="..\obj\stm32_ub_i2c2.o" lastModified="161a986caf2"/>
+         <source file="..\obj\stm32f4xx_usart.o" lastModified="161a986cbeb"/>
+         <source file="..\obj\tm_stm32f4_nrf24l01.o" lastModified="161a986ccf6"/>
+         <source file="..\obj\startup_stm32f4xx.o" lastModified="161a986cd9b"/>
+         <source file="..\obj\stm32_ub_led.o" lastModified="161a986ce4d"/>
+         <source file="..\obj\main.o" lastModified="161a986cff7"/>
+         <source file="..\obj\stm32f4xx_rcc.o" lastModified="161a986d101"/>
+         <source file="..\obj\timers.o" lastModified="161a986d1eb"/>
+         <source file="..\obj\printf.o" lastModified="161a986d2c5"/>
+         <source file="..\obj\tm_stm32f4_rotary_encoder.o" lastModified="161a986d381"/>
+         <source file="..\obj\stm32_ub_button.o" lastModified="161a986d43d"/>
+         <source file="..\obj\functions.o" lastModified="161a986d6ef"/>
+         <source file="..\obj\tasks.o" lastModified="161a986d83a"/>
+         <source file="..\obj\stm32_ub_spi1.o" lastModified="161a986d8f5"/>
+         <source file="..\obj\stm32_ub_uart.o" lastModified="161a986d9c0"/>
+         <source file="..\obj\stm32_ub_pwm_tim3.o" lastModified="161a986da8b"/>
+         <source file="..\obj\tm_stm32f4_spi.o" lastModified="161a986db55"/>
+         <source file="..\obj\stm32f4xx_gpio.o" lastModified="161a986dc20"/>
+         <source file="..\obj\sh_cmd.o" lastModified="161a986dc5f"/>
+         <source file="..\obj\list.o" lastModified="161a986dd1c"/>
+         <source file="..\obj\system_stm32f4xx.o" lastModified="161a986ddc8"/>
+         <source file="..\obj\stm32_ub_spi_send_mbyte.o" lastModified="161a986de83"/>
+         <source file="..\obj\port.o" lastModified="161a986df4e"/>
+         <source file="..\obj\queue.o" lastModified="161a986e076"/>
+         <source file="..\obj\croutine.o" lastModified="161a986e141"/>
+         <source file="..\obj\stm32f4xx_spi.o" lastModified="161a986e22b"/>
+         <source file="..\obj\stm32f4xx_i2c.o" lastModified="161a986e315"/>
+         <source file="..\obj\stm32f4xx_exti.o" lastModified="161a986e3d0"/>
+         <source file="..\obj\misc.o" lastModified="161a986e4a3"/>
+         <source file="..\obj\stm32_ub_encoder_tim2.o" lastModified="161a986e56e"/>
+         <source file="..\obj\stm32f4xx_rtc.o" lastModified="161a986e6a6"/>
+         <source file="..\obj\stm32_ub_freertos.o" lastModified="161a986e751"/>
+         <source file="..\obj\heap_2.o" lastModified="161a986e80d"/>
+         <source file="..\obj\stm32f4xx_tim.o" lastModified="161a986e983"/>
+         <source file="..\obj\eeprom.o" lastModified="161a986ea34"/>
+      </target>
+   </processor>
+</history>
