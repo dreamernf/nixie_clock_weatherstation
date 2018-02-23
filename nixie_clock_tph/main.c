@@ -801,6 +801,7 @@ void Out_Data_to_Nixie( void *pvParameters )
 
    if ((flag_menu == NO_MENU) && (flag_scan_inlamps == 0))
       {
+	   GetTP();
 	   	   	   	   if (time_of_display<TC)
 								{
 								   process_data_for_display_tph(TIME_SECONDS,sec);
@@ -812,7 +813,6 @@ void Out_Data_to_Nixie( void *pvParameters )
 								{
 
 									IN18_Off();
-									GetTP();
 									process_data_for_display_tph(PRESSURE,P);
 									out_data_to_indicators ();
 							}
@@ -821,7 +821,6 @@ void Out_Data_to_Nixie( void *pvParameters )
 								{
 
 									IN18_On_Only_EdMinutes();
-									GetTP();
 									process_data_for_display_clock(0,10);
 									process_data_for_display_tph(TEMP_P,T);
 									out_data_to_indicators ();
@@ -1217,14 +1216,14 @@ if (flag_menu ==  MENU_SET_TIME_DISPLAY_PRESSURE)
 							tmp_tdp++;
 								if (tmp_tdp > TIME_DISPLAY_MAX)
 									{
-										tmp_tdp = 10;
+										tmp_tdp = 3;
 									}
 								flag_btn_plus =0;
 						}
 				 if (flag_btn_minus ==1)
 						{
 							tmp_tdp--;
-								if (tmp_tdp <10)
+								if (tmp_tdp <3)
 								{
 									tmp_tdp = TIME_DISPLAY_MAX;
 								}
@@ -1260,14 +1259,14 @@ if (flag_menu ==  MENU_SET_TIME_DISPLAY_TEMP)
 							tmp_tdt++;
 								if (tmp_tdt > TIME_DISPLAY_MAX)
 									{
-										tmp_tdt = 10;
+										tmp_tdt = 3;
 									}
 								flag_btn_plus =0;
 						}
 				 if (flag_btn_minus ==1)
 						{
 							tmp_tdt--;
-								if (tmp_tdt <10)
+								if (tmp_tdt <3)
 								{
 									tmp_tdt = TIME_DISPLAY_MAX;
 								}
@@ -1302,14 +1301,14 @@ if (flag_menu ==  MENU_SET_TIME_DISPLAY_DM)
 							tmp_tdd++;
 								if (tmp_tdd > TIME_DISPLAY_MAX)
 									{
-										tmp_tdd = 10;
+										tmp_tdd = 3;
 									}
 								flag_btn_plus =0;
 						}
 				 if (flag_btn_minus ==1)
 						{
 							tmp_tdd--;
-								if (tmp_tdd <10)
+								if (tmp_tdd < 3)
 								{
 									tmp_tdd = TIME_DISPLAY_MAX;
 								}
@@ -1345,14 +1344,14 @@ if (flag_menu ==  MENU_SET_TIME_DISPLAY_HUM)
 					 	 	 tmp_th++;
 								if (tmp_th > TIME_DISPLAY_MAX)
 									{
-									 tmp_th = 10;
+									 tmp_th = 3;
 									}
-								flag_btn_plus =0;
+								flag_btn_plus = 0;
 						}
 				 if (flag_btn_minus ==1)
 						{
 					 	 tmp_th--;
-								if (tmp_th <10)
+								if (tmp_th <3)
 								{
 									tmp_th = TIME_DISPLAY_MAX;
 								}

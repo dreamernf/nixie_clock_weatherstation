@@ -243,7 +243,6 @@ if (type_of_ind == STATUS_RGB)
 	 symbols2_off();
 	 symbol_minus(ON);
 	 symbol_mm(ON);
-	 //symbol_dot2(OFF);
 	 symbol_smalldot(OFF);
 	 status_in14 = IN14_PART;
 
