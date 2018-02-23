@@ -5,7 +5,6 @@
 #include "stm32_ub_led.h"
 #include "stm32_ub_pwm_tim3.h"
 #include "stm32_ub_i2c2.h"
-#include "stm32_ub_uart.h"
 #include "stm32_ub_spi1.h"
 #include "stm32_ub_spi_send_mbyte.h"
 #include "stm32_ub_button.h"
@@ -71,6 +70,8 @@ uint8_t  global_time_of_display_t = 0;
 uint8_t  global_time_of_display_d = 0;
 uint8_t  global_time_of_display_h = 0;
 uint8_t  global_time_of_display_t2 = 0;
+uint8_t  global_display_rgbl_status = 0;
+
 
 uint8_t flag_menu = 0;
 uint8_t flag_one_read_m = 0;
@@ -82,6 +83,9 @@ uint8_t flag_one_read_tdd = 0;
 uint8_t flag_one_read_d = 0;
 uint8_t flag_one_read_mm = 0;
 uint8_t flag_one_read_th = 0;
+
+uint8_t flag_one_read_rgbl = 0;
+
 
 uint8_t flag_rec_ok =0;
 
@@ -102,7 +106,7 @@ uint8_t flag_scan_inlamps = 0;
 
 void IsWorkedTask( void *pvParameters );
 void PWMTask( void *pvParameters );
-void GetTP( void *pvParameters );
+void GetTP();
 void GetTime_and_Date( void *pvParameters );
 void GetTempOut( void *pvParameters );
 void Out_Data_to_Nixie( void *pvParameters );
@@ -116,7 +120,6 @@ void hw_init(void)
   //инициализация железа
   UB_Button_Init();
   UB_Led_Init();
-  //UB_Uart_Init();
   UB_Button_OnClick(BTN_MENU);
   UB_I2C2_Init();
   NIXIE_REG_Init();
@@ -145,6 +148,7 @@ void hw_init(void)
  global_time_of_display_t= Read_24Cxx(TEMPER_EEPROM,M24512);
  global_time_of_display_d= Read_24Cxx( DAYMONTH_EEPROM,M24512);
  global_time_of_display_h= Read_24Cxx( HUMV_EEPROM ,M24512);
+ global_display_rgbl_status = Read_24Cxx(STATUSLIGHT_EEPROM  ,M24512);
  global_time_of_display_t2 = global_time_of_display_t;
 
   TC=global_time_of_display_c;
@@ -173,16 +177,15 @@ int main(void)
   hw_init();
 
   //создание тасков
-  xTaskCreate( IsWorkedTask, ( signed char * ) "IsWorkedTask", configMINIMAL_STACK_SIZE, NULL, 1, NULL );
-  xTaskCreate( PWMTask, ( signed char * ) "PWMTask", configMINIMAL_STACK_SIZE, NULL, 1, NULL );
-  xTaskCreate( GetTP, ( signed char * ) "GetTP", configMINIMAL_STACK_SIZE, NULL, 1, NULL);
-  xTaskCreate( GetTempOut, ( signed char * ) "GetTempOut", configMINIMAL_STACK_SIZE, NULL, 1, NULL);
-  xTaskCreate( Out_Data_to_Nixie, ( signed char * ) "Out_Data_to_Nixie", configMINIMAL_STACK_SIZE, NULL, 1, NULL);
-  xTaskCreate( ScanInput, ( signed char * ) "ScanInput", configMINIMAL_STACK_SIZE, NULL, 1, NULL);
+  xTaskCreate(IsWorkedTask, ( signed char * ) "IsWorkedTask", configMINIMAL_STACK_SIZE, NULL, 1, NULL );
+  xTaskCreate(PWMTask, ( signed char * ) "PWMTask", configMINIMAL_STACK_SIZE, NULL, 1, NULL );
+  xTaskCreate(GetTempOut, ( signed char * ) "GetTempOut", configMINIMAL_STACK_SIZE, NULL, 1, NULL);
+  xTaskCreate(Out_Data_to_Nixie, ( signed char * ) "Out_Data_to_Nixie", configMINIMAL_STACK_SIZE, NULL, 1, NULL);
+  xTaskCreate(ScanInput, ( signed char * ) "ScanInput", configMINIMAL_STACK_SIZE, NULL, 1, NULL);
   xTaskCreate(GetTime_and_Date, ( signed char * ) "GetTime_and_Date", configMINIMAL_STACK_SIZE, NULL, 1, NULL);
   xTaskCreate(Dots_Clock, ( signed char * ) "Dots_Clock", configMINIMAL_STACK_SIZE, NULL, 1, NULL);
 
-    //запустили планировщик
+  //запустили планировщик
   vTaskStartScheduler();
 
   while(1)
@@ -210,7 +213,7 @@ void Dots_Clock( void *pvParameters )
     	    			     symbol_dot2(ON);
     	    		      }
 
-    				 vTaskDelay(390/portTICK_RATE_MS);
+    				 vTaskDelay(360/portTICK_RATE_MS);
 
    	    		  if (hour<10)
    	    		  {
@@ -223,8 +226,10 @@ void Dots_Clock( void *pvParameters )
    	    			     symbol_dot2(OFF);
    	    		      }
 
-					 vTaskDelay(390/portTICK_RATE_MS);
+					 vTaskDelay(360/portTICK_RATE_MS);
+
     			 }
+
               }
     }
   }
@@ -232,10 +237,6 @@ void Dots_Clock( void *pvParameters )
 void GetTime_and_Date( void *pvParameters )
   {
 	uint8_t  status_time = 0;
-	//uint8_t  status_lux = 0;
-	//uint16_t  LUX0 = 0;
-	//uint16_t  LUX1 = 0;
-	//double_t LUXDIV=0;
     while(1)
     {
 	//считываем значение часов-даты
@@ -251,49 +252,8 @@ void GetTime_and_Date( void *pvParameters )
        		 year = bcd2int(I2C2_DATA[6]);
        	 }
 
-       	  /*status_lux = UB_I2C2_ReadMultiByte(TLS2561, 0xAC, 2);
-       	  LUX0=I2C2_DATA[0]*256 + I2C2_DATA[1];
-
-       	  LUX = status_time;
-
-       	  status_lux = UB_I2C2_ReadMultiByte(TLS2561, 0xAE, 2);
-       	  LUX0=I2C2_DATA[0]*256 + I2C2_DATA[1];
-
-       	   LUXDIV=LUX1/LUX0;
-
-       	      if (LUXDIV>0.0 && LUXDIV<0.52)
-       	      {
-
-       	    //	  LUX = (uint16_t) 0.0315*LUX0-0.0593*LUX0* pow(LUXDIV,1.4);
-       	      }
-
-       	      if (LUXDIV>0.52 && LUXDIV<0.65)
-       	      {
-
-       	   // 	  LUX = (uint16_t) ( 0.0229*LUX0-0.0291*LUX1);
-       	      }
-
-       	      if (LUXDIV>0.65 && LUXDIV<0.80)
-       	      {
-
-       	    //	  LUX = (uint16_t) ( 0.0157*LUX0-0.0180*LUX1);
-       	      }
-
-       	      if (LUXDIV>0.80 && LUXDIV<1.30)
-       	      {
-
-       	    //	  LUX = (uint16_t) ( 0.00338*LUX0-0.00260*LUX1);
-       	      }
-
-       	      if (LUXDIV>1.30)
-       	      {
-
-       	    	//  LUX = (uint16_t)  0;
-       	      }
-    */
-
 	 taskEXIT_CRITICAL();
-	 vTaskDelay(500/portTICK_RATE_MS);
+	 vTaskDelay(100/portTICK_RATE_MS);
     }
   }
 
@@ -403,7 +363,8 @@ void ScanInput( void *pvParameters )
    	    	 flag_one_read_tdt = 0;
    	    	 flag_one_read_tdd = 0;
    	    	 flag_one_read_d = 0;
-   	    	flag_one_read_mm = 0;
+   	    	 flag_one_read_mm = 0;
+   	    	 flag_one_read_rgbl = 0;
    	      }
 
 	      //если находимся в последнем пункте меню
@@ -414,13 +375,13 @@ void ScanInput( void *pvParameters )
 	      }
       }
 
-   if (UB_Button_OnClick(BTN_PLUS)==true)
+if ((UB_Button_OnClick(BTN_PLUS)==true))
    {
-	   flag_btn_plus =1;
-	   Beep();
+		flag_btn_plus =1;
+		Beep();
    }
 
-   if (UB_Button_OnClick(BTN_MINUS)==true)
+if (UB_Button_OnClick(BTN_MINUS)==true)
    {
 	   flag_btn_minus =1;
 	   Beep();
@@ -438,15 +399,18 @@ void PWMTask( void *pvParameters )
   while(1)
   {
 
+
 	  if	(flag_menu != NO_MENU)
 		      {
-
-		    UB_PWM_TIM3_SetPWM(PWM_T3_PB4_BLUE,0);
-		    UB_PWM_TIM3_SetPWM(PWM_T3_PB5_RED,RGBLED_BRIGN);
-		    UB_PWM_TIM3_SetPWM(PWM_T3_PB0_GREEN,0);
+					UB_PWM_TIM3_SetPWM(PWM_T3_PB4_BLUE,0);
+					UB_PWM_TIM3_SetPWM(PWM_T3_PB5_RED,RGBLED_BRIGN);
+					UB_PWM_TIM3_SetPWM(PWM_T3_PB0_GREEN,0);
 
 		      } else
-		      {
+		         {
+
+	  if ( global_display_rgbl_status == 1 )
+	  {
 
 	  if ((hour>=DAY1)&&(hour<DAY2))
 	  {
@@ -677,18 +641,24 @@ void PWMTask( void *pvParameters )
 							    vTaskDelay(40/portTICK_RATE_MS);
 	             }
 	  }
+	  else
+	  {
+		  UB_PWM_TIM3_SetPWM(PWM_T3_PB4_BLUE,0);
+		  UB_PWM_TIM3_SetPWM(PWM_T3_PB5_RED,0);
+		  UB_PWM_TIM3_SetPWM(PWM_T3_PB0_GREEN,0);
+	  }
+  }
 
 	    vTaskDelay(3/portTICK_RATE_MS);
+   }
   }
-}
+
 
 //таск опроса датчиков давления, температуры, влажности, часов
-void GetTP( void *pvParameters )
+void GetTP()
   {
 	uint16_t rawHumidity = 0;
-    while(1)
-    {
-    	///опрос DMP180
+  	///опрос DMP180
     	int16_t AC1 = 0, AC2 = 0, AC3 = 0;
     	uint16_t AC4 = 0, AC5 = 0, AC6 = 0;
     	int16_t B1 = 0, B2 = 0, MB = 0, MC = 0, MD = 0;
@@ -763,10 +733,8 @@ void GetTP( void *pvParameters )
        		//HUMV =(float)tempRH1 * 10;
        		HUMV =(float)tempRH1;
 
-       	 vTaskDelay(5000/portTICK_RATE_MS);
-
     }
-  }
+
 
 //таск расчета и вывода данных на индикаторы, индикация меню
 void Out_Data_to_Nixie( void *pvParameters )
@@ -780,6 +748,8 @@ void Out_Data_to_Nixie( void *pvParameters )
 	int8_t tmp_th = 0;
 	int8_t tmp_day = 0;
 	int8_t tmp_mm = 0;
+
+	uint8_t tmp_rgbl = 0;
 
 	uint8_t byte_eeprom = 0;
 	uint8_t tt = 0;
@@ -842,6 +812,7 @@ void Out_Data_to_Nixie( void *pvParameters )
 								{
 
 									IN18_Off();
+									GetTP();
 									process_data_for_display_tph(PRESSURE,P);
 									out_data_to_indicators ();
 							}
@@ -850,6 +821,7 @@ void Out_Data_to_Nixie( void *pvParameters )
 								{
 
 									IN18_On_Only_EdMinutes();
+									GetTP();
 									process_data_for_display_clock(0,10);
 									process_data_for_display_tph(TEMP_P,T);
 									out_data_to_indicators ();
@@ -900,7 +872,7 @@ void Out_Data_to_Nixie( void *pvParameters )
 										time_of_display = 0;
 									}
 
-						vTaskDelay(500/portTICK_RATE_MS);
+						vTaskDelay(50/portTICK_RATE_MS);
     }
 
 if (flag_menu == MENU_SET_MINUTE)
@@ -1245,14 +1217,14 @@ if (flag_menu ==  MENU_SET_TIME_DISPLAY_PRESSURE)
 							tmp_tdp++;
 								if (tmp_tdp > TIME_DISPLAY_MAX)
 									{
-										tmp_tdp = 0;
+										tmp_tdp = 10;
 									}
 								flag_btn_plus =0;
 						}
 				 if (flag_btn_minus ==1)
 						{
 							tmp_tdp--;
-								if (tmp_tdp <0)
+								if (tmp_tdp <10)
 								{
 									tmp_tdp = TIME_DISPLAY_MAX;
 								}
@@ -1288,14 +1260,14 @@ if (flag_menu ==  MENU_SET_TIME_DISPLAY_TEMP)
 							tmp_tdt++;
 								if (tmp_tdt > TIME_DISPLAY_MAX)
 									{
-										tmp_tdt = 0;
+										tmp_tdt = 10;
 									}
 								flag_btn_plus =0;
 						}
 				 if (flag_btn_minus ==1)
 						{
 							tmp_tdt--;
-								if (tmp_tdt <0)
+								if (tmp_tdt <10)
 								{
 									tmp_tdt = TIME_DISPLAY_MAX;
 								}
@@ -1330,14 +1302,14 @@ if (flag_menu ==  MENU_SET_TIME_DISPLAY_DM)
 							tmp_tdd++;
 								if (tmp_tdd > TIME_DISPLAY_MAX)
 									{
-										tmp_tdd = 0;
+										tmp_tdd = 10;
 									}
 								flag_btn_plus =0;
 						}
 				 if (flag_btn_minus ==1)
 						{
 							tmp_tdd--;
-								if (tmp_tdd <0)
+								if (tmp_tdd <10)
 								{
 									tmp_tdd = TIME_DISPLAY_MAX;
 								}
@@ -1373,14 +1345,14 @@ if (flag_menu ==  MENU_SET_TIME_DISPLAY_HUM)
 					 	 	 tmp_th++;
 								if (tmp_th > TIME_DISPLAY_MAX)
 									{
-									 tmp_th = 0;
+									 tmp_th = 10;
 									}
 								flag_btn_plus =0;
 						}
 				 if (flag_btn_minus ==1)
 						{
 					 	 tmp_th--;
-								if (tmp_th <0)
+								if (tmp_th <10)
 								{
 									tmp_th = TIME_DISPLAY_MAX;
 								}
@@ -1398,6 +1370,52 @@ if (flag_menu ==  MENU_SET_TIME_DISPLAY_HUM)
 					out_data_to_indicators ();
 					 vTaskDelay(100/portTICK_RATE_MS);
 		}
+
+if (flag_menu ==  MENU_SET_TIME_DISPLAY_RGBLIGHT )
+	{
+	IN18_Off();
+	if (flag_one_read_rgbl== 0)
+		{
+			taskENTER_CRITICAL();
+			tmp_rgbl = Read_24Cxx(STATUSLIGHT_EEPROM,M24512);
+			taskEXIT_CRITICAL();
+			flag_one_read_rgbl = 1;
+		}
+
+	             if (flag_btn_plus ==1)
+						{
+		                  tmp_rgbl++;
+
+		                  if (tmp_rgbl>1)
+		                  {
+		                	  tmp_rgbl = 0;
+		                  }
+
+ 						  flag_btn_plus =0;
+						}
+				 if (flag_btn_minus == 1)
+						{
+					       tmp_rgbl++;
+
+			               if (tmp_rgbl>1)
+			                  {
+			                	  tmp_rgbl = 0;
+			                  }
+
+					       flag_btn_minus = 0;
+
+						}
+					global_display_rgbl_status = tmp_rgbl;
+
+					taskENTER_CRITICAL();
+					Write_24Cxx(STATUSLIGHT_EEPROM,tmp_rgbl,M24512);
+					taskEXIT_CRITICAL();
+
+					process_data_for_display_tph(STATUS_RGB ,tmp_rgbl);
+					out_data_to_indicators ();
+					 vTaskDelay(100/portTICK_RATE_MS);
+
+	}
 
 						TC=global_time_of_display_c;
 						TP=TC+global_time_of_display_p;

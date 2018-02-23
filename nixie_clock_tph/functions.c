@@ -11,21 +11,6 @@ uint8_t   byte5 = 0;
 uint8_t   byte6 = 0;
 
 
-// Посмотреть относительное перемещение (по сравнению с прошлым вызовом)
-int16_t enc_GetRelativeMove(void)
-{
-	// Для хранения предыдущего значения счетчика
-	static uint16_t CNT_last = 0;
-	// Текущее значение, чтоб только один раз было запрошено
-	uint16_t CNT_now =UB_ENCODER_TIM2_ReadPos();
-	// Посчитаем перемещение
-	int16_t  CNT_diff = (int16_t)(CNT_now - CNT_last);
-	// Сохраним текущее значение как предыдущее
-	CNT_last = CNT_now;
-	// Вернем перемещение
-	return CNT_diff;
-}
-
 uint8_t  convert_code_id1_in14(uint8_t data)
 {
 uint8_t temp = 0;
@@ -251,6 +236,27 @@ void process_data_for_display_tph(uint8_t  type_of_ind , uint16_t data)
 	uint8_t tmp_sec = 0;
 
 status_in14 = IN14_DEC + IN14_EDIN + IN14_PART;
+
+if (type_of_ind == STATUS_RGB)
+	{
+	 DATA_TPH2 = 0;
+	 symbols2_off();
+	 symbol_minus(ON);
+	 symbol_mm(ON);
+	 //symbol_dot2(OFF);
+	 symbol_smalldot(OFF);
+	 status_in14 = IN14_PART;
+
+
+    tmp = data%100;
+    DATA_TPH1 = convert_code_id1_in14(tmp%10);
+    DATA_TPH1  =DATA_TPH1  <<4;
+    DATA_TPH1  =DATA_TPH1  + convert_code_id1_in14(data/100);
+    DATA_TPH2 =  convert_code_id1_in14(tmp/10);
+    DATA_TPH2 = DATA_TPH2 << 4;
+
+    DATA_TPH2 =DATA_TPH2+ status_in14;
+	}
 
 if (type_of_ind == PRESSURE)
 	{

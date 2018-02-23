@@ -23,7 +23,12 @@
 #define  MENU_SET_TIME_DISPLAY_TEMP 				7
 #define  MENU_SET_TIME_DISPLAY_DM 					8
 #define  MENU_SET_TIME_DISPLAY_HUM 				9
-#define  MENU_LAST  												MENU_SET_TIME_DISPLAY_HUM+1
+#define  MENU_SET_TIME_DISPLAY_RGBLIGHT 				10
+#define  MENU_LAST  												MENU_SET_TIME_DISPLAY_RGBLIGHT+1
+
+#define  RGB_LIGHT_ON                                 1
+#define  RGB_LIGHT_OFF                                0
+
 
 //определения адресов устройств i2c
 #define   BMP085    						0xEF  //датчик давления + температуры
@@ -92,6 +97,7 @@
 #define  TIME_TDD 			11
 #define  DEMO 				12
 #define  ERROR_RF    		13
+#define  STATUS_RGB    		14
 
 
 //биты ключей анодов ламп дисплея погодной станции
@@ -132,6 +138,7 @@
 #define   TEMPER_EEPROM  		 	0x2236
 #define   DAYMONTH_EEPROM  	0x2237
 #define   HUMV_EEPROM    			0x2238
+#define   STATUSLIGHT_EEPROM    			0x2239
 
 
 
