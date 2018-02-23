@@ -165,7 +165,6 @@
     <File name="cmsis_lib/include/stm32f4xx_spi.h" path="cmsis_lib/include/stm32f4xx_spi.h" type="1"/>
     <File name="ub_lib/FreeRTOS/Source/timers.c" path="ub_lib/FreeRTOS/Source/timers.c" type="1"/>
     <File name="ub_lib/FreeRTOS/Source/tasks.c" path="ub_lib/FreeRTOS/Source/tasks.c" type="1"/>
-    <File name="ub_lib/stm32_ub_uart.c" path="ub_lib/stm32_ub_uart.c" type="1"/>
     <File name="ub_lib/FreeRTOS/Source/include/croutine.h" path="ub_lib/FreeRTOS/Source/include/croutine.h" type="1"/>
     <File name="ub_lib/stm32_ub_button.c" path="ub_lib/stm32_ub_button.c" type="1"/>
     <File name="ub_lib/tm_stm32f4_spi.h" path="ub_lib/tm_stm32f4_spi.h" type="1"/>
@@ -174,7 +173,6 @@
     <File name="cmsis_lib" path="" type="2"/>
     <File name="ub_lib/stm32_ub_i2c2.c" path="ub_lib/stm32_ub_i2c2.c" type="1"/>
     <File name="ub_lib/stm32_ub_spi1.h" path="ub_lib/stm32_ub_spi1.h" type="1"/>
-    <File name="ub_lib/stm32_ub_uart.h" path="ub_lib/stm32_ub_uart.h" type="1"/>
     <File name="cmsis_lib/source/stm32f4xx_tim.c" path="cmsis_lib/source/stm32f4xx_tim.c" type="1"/>
     <File name="ub_lib/eeprom.c" path="ub_lib/eeprom.c" type="1"/>
     <File name="ub_lib/functions.c" path="functions.c" type="1"/>
